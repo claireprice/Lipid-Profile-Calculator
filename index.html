@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lipid Profile Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 5px;
+      margin: 5px 0;
+      width: 200px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .result, .explanation, .quiz, .relevance {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-left: 4px solid #007BFF;
+    }
+    .quiz {
+      border-color: green;
+      background: #e6ffe6;
+    }
+    .relevance {
+      border-color: darkorange;
+      background: #fff3e6;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lipid Profile Calculator</h1>
+  <p>Enter lipid values and patient characteristics to calculate LDL and assess cardiovascular risk indicators.</p>
+
+  <label>Total Cholesterol (mg/dL):</label>
+  <input type="number" id="tc" step="0.1">
+
+  <label>HDL Cholesterol (mg/dL):</label>
+  <input type="number" id="hdl" step="0.1">
+
+  <label>Triglycerides (mg/dL):</label>
+  <input type="number" id="tg" step="0.1">
+
+  <label>Age:</label>
+  <input type="number" id="age">
+
+  <label>Gender:</label>
+  <select id="gender">
+    <option value="">-- Select --</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </select>
+
+  <label>Smoker?</label>
+  <select id="smoker">
+    <option value="no">No</option>
+    <option value="yes">Yes</option>
+  </select>
+
+  <label>Diabetes?</label>
+  <select id="diabetes">
+    <option value="no">No</option>
+    <option value="yes">Yes</option>
+  </select>
+
+  <label>Family History of CVD?</label>
+  <select id="family">
+    <option value="no">No</option>
+    <option value="yes">Yes</option>
+  </select>
+
+  <div style="margin-top: 20px;">
+    <button onclick="calculateLipidProfile()">Calculate Profile</button>
+  </div>
+
+  <div class="result" id="result"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="relevance" id="relevance"></div>
+
+  <p style="margin-top: 30px; font-size: 0.9em; color: #a00;"><em>Note: Friedewald equation not valid when TG > 400 mg/dL.</em></p>
+  <footer>
+    &copy; Claire L. Price
+  </footer>
+
+  <script>
+    function calculateLipidProfile() {
+      const tc = parseFloat(document.getElementById('tc').value);
+      const hdl = parseFloat(document.getElementById('hdl').value);
+      const tg = parseFloat(document.getElementById('tg').value);
+      const age = parseInt(document.getElementById('age').value);
+      const gender = document.getElementById('gender').value;
+      const smoker = document.getElementById('smoker').value;
+      const diabetes = document.getElementById('diabetes').value;
+      const family = document.getElementById('family').value;
+
+      if (isNaN(tc) || isNaN(hdl) || isNaN(tg)) {
+        document.getElementById('result').textContent = 'Please enter valid cholesterol and triglyceride values.';
+        return;
+      }
+
+      let result = '', explanation = '', quiz = '', relevance = '';
+      const nonHDL = tc - hdl;
+
+      if (tg > 400) {
+        result = `Triglycerides too high for reliable LDL calculation.`;
+      } else {
+        const ldl = tc - hdl - (tg / 5);
+        result = `LDL-C = ${ldl.toFixed(1)} mg/dL<br>Non-HDL = ${nonHDL.toFixed(1)} mg/dL`;
+        explanation = `LDL = TC - HDL - (TG / 5) = ${tc} - ${hdl} - (${tg}/5) = ${ldl.toFixed(1)} mg/dL<br>Non-HDL = TC - HDL = ${tc} - ${hdl} = ${nonHDL.toFixed(1)} mg/dL`;
+      }
+
+      let risks = [];
+      if (age >= 45) risks.push("Age ≥ 45");
+      if (smoker === "yes") risks.push("Smoker");
+      if (diabetes === "yes") risks.push("Diabetes");
+      if (family === "yes") risks.push("Family history of CVD");
+
+      if (risks.length > 0) {
+        relevance = `Risk factors present: ${risks.join(', ')}`;
+      } else {
+        relevance = `No major risk factors detected.`;
+      }
+
+      quiz = `Quiz: What lifestyle or medication interventions might be appropriate for this patient?`;
+
+      document.getElementById('result').innerHTML = result;
+      document.getElementById('explanation').innerHTML = explanation;
+      document.getElementById('quiz').textContent = quiz;
+      document.getElementById('relevance').textContent = relevance;
+    }
+  </script>
+</body>
+</html>
