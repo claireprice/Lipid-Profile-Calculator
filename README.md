@@ -40,3 +40,7 @@ Under the following terms:
 🔗 Full license text: [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/)
 
 © Claire Price, 2025.
+
+[![DOI](https://zenodo.org/badge/991492112.svg)](https://doi.org/10.5281/zenodo.15538093)
+
+
