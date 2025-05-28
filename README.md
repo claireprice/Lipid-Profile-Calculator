@@ -41,6 +41,6 @@ Under the following terms:
 
 © Claire Price, 2025.
 
-[![DOI](https://zenodo.org/badge/991492112.svg)](https://doi.org/10.5281/zenodo.15538093)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15538201.svg)](https://doi.org/10.5281/zenodo.15538201)
 
 
